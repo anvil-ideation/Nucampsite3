@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { Text, ScrollView } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
-import { CAMPSITES } from '../shared/campsites';
-import { PROMOTIONS } from '../shared/promotions';
 import { PARTNERS } from '../shared/partners';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -25,8 +23,6 @@ class About extends Component {
         super(props);
         this.state = {
             partners: PARTNERS,
-            promotions: PROMOTIONS,
-            campsites: CAMPSITES,
         };
     }
 
