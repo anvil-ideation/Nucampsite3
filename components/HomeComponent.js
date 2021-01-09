@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { Card } from 'react-native-elements';
+import { Card, Avatar, Badge, Icon, withBadge } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
@@ -57,12 +57,12 @@ class Home extends Component {
                     isLoading={this.props.campsites.isLoading}
                     errMess={this.props.campsites.errMess}
                 />
-                                <RenderItem
+                <RenderItem
                     item={this.props.promotions.promotions.filter(promotion => promotion.featured)[0]}
                     isLoading={this.props.promotions.isLoading}
                     errMess={this.props.promotions.errMess}
                 />
-                                <RenderItem
+                <RenderItem
                     item={this.props.partners.partners.filter(partner => partner.featured)[0]}
                     isLoading={this.props.partners.isLoading}
                     errMess={this.props.partners.errMess}
