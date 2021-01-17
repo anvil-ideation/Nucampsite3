@@ -94,7 +94,8 @@ const styles = StyleSheet.create({
     },
     formCheckbox: {
         margin: 10,
-        backgroundColor: null
+        backgroundColor: null,
+        borderColor: '#fff'
     },
     formButton: {
         margin: 40

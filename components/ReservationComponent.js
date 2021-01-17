@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import * as Notifications from 'expo-notifications';
 import * as Animatable from 'react-native-animatable';
 
 class Reservation extends Component {
@@ -27,6 +28,31 @@ class Reservation extends Component {
             date: new Date(),
             showCalendar: false,
         });
+    }
+
+    async presentLocalNotification(date) {
+        function sendNotification() {
+            Notifications.setNotificationHandler({
+                handleNotification: async () => ({
+                    shouldShowAlert: true
+                })
+            });
+
+            Notifications.scheduleNotificationAsync({
+                content: {
+                    title: 'Your Campsite Reservation Search',
+                    body: `Search for ${date} requested`
+                },
+                trigger: null
+            });
+        }
+        let permissions = await Notifications.getPermissionsAsync();
+        if (!permissions.granted) {
+            permissions = await Notifications.requestPermissionsAsync();
+        }
+        if (permissions.granted) {
+            sendNotification();
+        }
     }
 
     render() {
@@ -88,22 +114,23 @@ class Reservation extends Component {
                             onPress={() => 
                                 Alert.alert(
                                     'Begin Search?',
-                                    /* I wanted to be able to use view and text components to make the alert body more readable, but was not sure how to populate the code without it throwing an error, so I went for concatenation formatting instead. This is what I had planned on using for the alert body:                                  
-                                    <View>
-                                        <Text>Number of Campers: {this.state.campers}</Text>
-                                        <Text>Hike-In? {this.state.hikeIn}</Text>
-                                        <Text>Date: {this.state.date.toLocaleDateString()}</Text>
-                                    </View>*/
                                     'Number of Campers: ' + this.state.campers + '\n\nHike-In? ' + this.state.hikeIn + '\n\nDate: ' + this.state.date.toLocaleDateString(),
                                     [
                                         {
                                             text: 'Cancel',
                                             style: 'cancel',
-                                            onPress: () => console.log('Cancel Pressed')
+                                            onPress: () => {
+                                                console.log('Reservation Search Cancelled');
+                                                this.resetForm();
+                                            },
                                         },
                                         {
                                             text: 'OK',
-                                            onPress: () => console.log('OK Pressed')
+                                            onPress: () => {
+                                                console.log('OK Pressed');
+                                                this.resetForm();
+                                                this.presentLocalNotification(this.state.date.toLocaleDateString('en-US'));
+                                            },
                                         },
                                     ],
                                     { cancelable: false }
